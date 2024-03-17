@@ -16,8 +16,6 @@
 //
 // Execute `rustlings hint quiz3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 pub struct ReportCard {
     pub grade: f32,
     pub student_name: String,
@@ -26,8 +24,32 @@ pub struct ReportCard {
 
 impl ReportCard {
     pub fn print(&self) -> String {
-        format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
+        format!(
+            "{} ({}) - achieved a grade of {}",
+            &self.student_name, &self.student_age, &self.grade
+        )
+    }
+}
+
+pub trait PrintAlphabetical {
+    fn print_alphabetical(&self) -> String;
+}
+
+impl PrintAlphabetical for ReportCard {
+    fn print_alphabetical(&self) -> String {
+        let alphabetical = vec![
+            "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "E+", "E", "E-",
+            "F+", "F", "F-",
+        ];
+
+        let index = ((self.grade - 1.0) / (5.5 - 1.0)).floor() as usize;
+
+        let grade: String = alphabetical[index].to_string();
+
+        format!(
+            "{} ({}) - achieved a grade of {}",
+            &self.student_name, &self.student_age, &grade
+        )
     }
 }
 
@@ -57,7 +79,7 @@ mod tests {
             student_age: 11,
         };
         assert_eq!(
-            report_card.print(),
+            report_card.print_alphabetical(),
             "Gary Plotter (11) - achieved a grade of A+"
         );
     }
